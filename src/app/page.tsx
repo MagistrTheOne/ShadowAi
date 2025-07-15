@@ -29,7 +29,8 @@ export default function Home() {
     })
   } 
     const onLogin = () =>{
-    authClient.signIn.email({
+    authClient.signIn.email(
+      {
       email,
       password,
     },
