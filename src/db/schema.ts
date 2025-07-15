@@ -1,8 +1,9 @@
 import { pgTable, text, timestamp, boolean, integer } from "drizzle-orm/pg-core";
 
-export const user = pgTable("user", {
-          id: text('id').primaryKey(),
-          name: text('name').notNull(),
+export const user = pgTable("user", 
+  {
+ id: text('id').primaryKey(),
+ name: text('name').notNull(),
  email: text('email').notNull().unique(),
  emailVerified: boolean('email_verified').$defaultFn(() => false).notNull(),
  image: text('image'),
@@ -10,7 +11,8 @@ export const user = pgTable("user", {
  updatedAt: timestamp('updated_at').$defaultFn(() => /* @__PURE__ */ new Date()).notNull()
         });
 
-export const session = pgTable("session", {
+export const session = pgTable("session", 
+  {
           id: text('id').primaryKey(),
           expiresAt: timestamp('expires_at').notNull(),
  token: text('token').notNull().unique(),
