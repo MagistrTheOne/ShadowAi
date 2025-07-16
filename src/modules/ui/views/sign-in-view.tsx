@@ -4,7 +4,7 @@ import { z } from "zod";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import Link from "next/link";
-
+import { authClient } from "@/lib/auth-client";
 import { Card, CardContent } from "@/components/ui/card";
 import { Input } from "@/components/ui/input";
 import { Button } from "@/components/ui/button";
@@ -18,6 +18,8 @@ import {
 } from "@/components/ui/form";
 import { Alert, AlertTitle } from "@/components/ui/alert";
 import { OctagonAlertIcon } from "lucide-react";
+import { useRouter } from "next/navigation"; // <--- исправлено
+import { useState } from "react";
 
 const formSchema = z.object({
   email: z.string().email(),
@@ -25,23 +27,52 @@ const formSchema = z.object({
 });
 
 export const SignInView = () => {
+  const router = useRouter();
+  const [error, setError] = useState<string | null>(null);
+
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
-    defaultValues: { email: "", password: "" },
+    defaultValues: {
+      email: "",
+      password: "",
+    },
   });
+
+  const onSubmit = async (data: z.infer<typeof formSchema>) => {
+    setError(null);
+    try {
+      // Используем await и промис
+      await authClient.signIn.email(
+        {
+          email: data.email,
+          password: data.password,
+        },
+        {
+          onSuccess: () => {
+            router.push("/");
+          },
+          onError: (err) => {
+            // Подстраховка по типу ошибки
+            const msg = err?.error?.message ?? "Unknown error";
+            setError(msg);
+          },
+        }
+      );
+    } catch (e) {
+      setError("Unexpected error");
+    }
+  };
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center px-4">
       <Card className="overflow-hidden p-0 max-w-4xl w-full">
         <CardContent className="grid p-0 md:grid-cols-2">
           <Form {...form}>
-            <form className="p-6 md:p-8 flex flex-col gap-6">
+            <form onSubmit={form.handleSubmit(onSubmit)} className="p-6 md:p-8 flex flex-col gap-6">
               {/* Заголовок */}
               <div className="flex flex-col items-center text-center">
                 <h1 className="text-2xl font-bold">Welcome back</h1>
-                <p className="text-muted-foreground text-balance">
-                  Login to your account
-                </p>
+                <p className="text-muted-foreground text-balance">Login to your account</p>
               </div>
 
               {/* Поля формы */}
@@ -75,10 +106,10 @@ export const SignInView = () => {
               </div>
 
               {/* Ошибка */}
-              {true && (
+              {!!error && (
                 <Alert className="bg-destructive/10 border-none">
                   <OctagonAlertIcon className="h-4 w-4 !text-destructive" />
-                  <AlertTitle>Error</AlertTitle>
+                  <AlertTitle>{error}</AlertTitle>
                 </Alert>
               )}
 
