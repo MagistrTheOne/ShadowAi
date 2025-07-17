@@ -1,5 +1,5 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
-import { DasboardNavbar } from "@/modules/dashboard/ui/components/dashboard-navbar";
+import { DashboardNavbar } from "@/modules/dashboard/ui/components/dashboard-navbar";
 import { DashboardSidebar } from "@/modules/dashboard/ui/components/dashboard-sidebar";
 import * as Dialog from "@radix-ui/react-dialog";
 
@@ -14,7 +14,7 @@ const Layout = ({ children }: Props) => {
         <DashboardSidebar />
       </Dialog.Root>
       <main className="flex flex-col h-screen w-screen bg-muted">
-        <DasboardNavbar />
+        <DashboardNavbar />
         {children}
       </main>
     </SidebarProvider>

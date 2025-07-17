@@ -7,8 +7,7 @@ import { DashboardCommand } from "./dashboard-command";
 import { useEffect, useState } from "react";
 import { DrawerTrigger,DrawerContent,DrawerDescription,DrawerHeader,DrawerFooter,Drawer,DrawerTitle } from "@/components/ui/drawer";
 import { useIsMobile } from "@/hooks/use-mobile";
-export const DasboardNavbar = () => {
-    const { state, toggleSidebar, isMobile } = useSidebar();
+export const DashboardNavbar = () => {    const { state, toggleSidebar, isMobile } = useSidebar();
     const iseMobile =useIsMobile();
     
     const [commandOpen,setcommandOpen] = useState(false);
