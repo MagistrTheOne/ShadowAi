@@ -2,8 +2,12 @@ import { headers } from "next/headers";
 import { auth } from "@/lib/auth";
 import { HomeView } from "@/modules/home/ui/views/home-view";
 import { redirect } from "next/navigation";
-
+ 
 const Page = async () => {
+  //trpc setup(feature and && new logic for fetch and required data api from server-component)
+
+ 
+
   const readOnly = headers();
   const mutableHeaders = new Headers();
 
@@ -18,6 +22,9 @@ const Page = async () => {
   if (!session) {
     redirect("/sign-in");
   }
+
+ 
+
 
   return <HomeView />;
 };

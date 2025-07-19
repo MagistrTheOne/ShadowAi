@@ -65,10 +65,10 @@ export const DashboardSidebar = () => {
 
   return (
     <Sidebar>
-      <SidebarHeader className="text-sidebar-accent-foreground px-4 py-3 border-b border-[#5D6B68]/30 flex items-center gap-3">
-        <Link href="/" className="flex items-center gap-3">
+      <SidebarHeader className="text-sidebar-accent-foreground px-3 py-3 border-b border-[#5D6B68]/30 flex items-center gap-3">
+        <Link href="/" className="flex items-center gap-2">
           <Image src="/logo.svg" height={36} width={36} alt="Shadow AI Logo" priority />
-          <p className="text-2xl font-extrabold tracking-tight select-none">Shadow.Ai</p>
+          <p className="text-3xl font-extrabold tracking-tight select-none">Shadow.Ai</p>
         </Link>
       </SidebarHeader>
 
