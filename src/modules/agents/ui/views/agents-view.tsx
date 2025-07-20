@@ -26,8 +26,7 @@ export const AgentsViewLoading =() => {
 export const AgentsViewError = () => {
     return (
         <ErrorState
-            title="Error Loading Agent..no cry..don&apos;t panic.."
-            description="404 bad Evil cry!"
-            />
-    )
+            title="Failed to Load Agents"
+            description="We couldn't load your agents. Please try refreshing the page or contact support if the problem persists."
+        />    )
 }
