@@ -21,6 +21,7 @@ import {
 import { Separator } from "@/components/ui/separator";
 import { DashboardUserButton } from "./dashboard-user-button";
 
+// 🧠 Меню — вынесено в конфиги
 const firstSection = [
   { icon: VideoIcon, label: "Meetings", href: "/meetings" },
   { icon: BotIcon, label: "Agents", href: "/agents" },
@@ -30,8 +31,9 @@ const secondSection = [
   { icon: StarIcon, label: "Upgrade", href: "/upgrade" },
 ];
 
+// 📦 Общий компонент меню
 const MenuItems = ({ items, pathname }: { items: typeof firstSection; pathname: string }) => (
-  <div className="space-y-2"> {/* Добавлен отступ между пунктами */}
+  <div className="space-y-2">
     {items.map((item) => {
       const active = pathname === item.href;
       return (
@@ -45,7 +47,7 @@ const MenuItems = ({ items, pathname }: { items: typeof firstSection; pathname: 
               "hover:shadow-lg hover:shadow-[#5D6B68]/20",
               "text-sidebar-accent-foreground hover:text-white",
               active &&
-                "bg-gradient-to-r from-[#5D6B68]/30 to-[#5D6B68]/10 border border-[#5D6B68]/40 text-white shadow-[0_0_10px_#5D6B68]"
+                "bg-gradient-to-r from-[#1F2C27]/60 to-[#1F2C27]/30 backdrop-blur-md border border-[#5D6B68]/60 text-white shadow-[0_0_10px_#5D6B68]"
             )}
             isActive={active}
           >
@@ -64,11 +66,20 @@ export const DashboardSidebar = () => {
   const pathname = usePathname() || "/";
 
   return (
-    <Sidebar>
-      <SidebarHeader className="text-sidebar-accent-foreground px-3 py-3 border-b border-[#5D6B68]/30 flex items-center gap-3">
+    <Sidebar
+      className={cn(
+        // 💎 Эффект стекла + тёмно-зелёный градиент
+        "bg-[#121e1a]/80 backdrop-blur-xl border-r border-[#5D6B68]/40 shadow-xl",
+        "text-white"
+      )}
+    >
+      {/* 🔰 Шапка — стекло, тёмный фон, жирный заголовок */}
+      <SidebarHeader className="px-4 py-4   backdrop-blur-md shadow-inner flex items-center gap-3">
         <Link href="/" className="flex items-center gap-2">
           <Image src="/logo.svg" height={36} width={36} alt="Shadow AI Logo" priority />
-          <p className="text-3xl font-extrabold tracking-tight select-none">Shadow.Ai</p>
+          <p className="text-3xl font-extrabold tracking-tight select-none text-[#ffffff] drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)]">
+            Shadow.Ai
+          </p>
         </Link>
       </SidebarHeader>
 
@@ -84,10 +95,8 @@ export const DashboardSidebar = () => {
             </SidebarMenu>
           </SidebarGroupContent>
 
-          {/* Разделитель между секциями */}
           <SidebarSeparator className="my-4 border-t-2 border-[#5D6B68]/70" />
 
-          {/* ↓ Здесь я добавил отступ сверху у второй секции, чтобы её чуть опустить */}
           <SidebarGroupContent className="mt-2">
             <SidebarMenu>
               <MenuItems items={secondSection} pathname={pathname} />
@@ -96,7 +105,8 @@ export const DashboardSidebar = () => {
         </SidebarGroup>
       </SidebarContent>
 
-      <SidebarFooter className="text-white">
+      {/* 👤 Футер с кнопкой юзера */}
+      <SidebarFooter className="bg-[#1F2C27]/50 backdrop-blur-sm border-t border-[#5D6B68]/40">
         <DashboardUserButton />
       </SidebarFooter>
     </Sidebar>

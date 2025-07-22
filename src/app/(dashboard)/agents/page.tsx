@@ -3,6 +3,7 @@ import { getQueryClient, trpc, HydrateClient } from '@/trpc/server';
 import { AgentsView, AgentsViewError, AgentsViewLoading } from "@/modules/agents/ui/views/agents-view";
 import { Suspense } from 'react';
 import { ErrorBoundary } from 'react-error-boundary';
+import { AgentsListHeader } from '@/modules/agents/components/agents-list-header';
 
 const Page = async () => {
   const queryClient = getQueryClient();
@@ -13,6 +14,8 @@ const Page = async () => {
   });
 
   return (
+    <>
+    <AgentsListHeader/>
     <HydrateClient>
       <Suspense fallback={<AgentsViewLoading />}>
         <ErrorBoundary fallback={<AgentsViewError />}>
@@ -20,6 +23,7 @@ const Page = async () => {
         </ErrorBoundary>
       </Suspense>
     </HydrateClient>
+    </>
   );
 };
 
