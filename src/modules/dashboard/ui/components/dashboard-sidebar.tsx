@@ -33,7 +33,7 @@ const secondSection = [
 
 // 📦 Общий компонент меню
 const MenuItems = ({ items, pathname }: { items: typeof firstSection; pathname: string }) => (
-  <div className="space-y-2">
+  <div className="space-y-1">
     {items.map((item) => {
       const active = pathname === item.href;
       return (
@@ -41,18 +41,31 @@ const MenuItems = ({ items, pathname }: { items: typeof firstSection; pathname: 
           <SidebarMenuButton
             asChild
             className={cn(
-              "group flex items-center gap-4 px-4 py-2 rounded-lg transition-all duration-250 ease-out select-none",
-              "bg-sidebar-accent/10 hover:bg-sidebar-accent/30",
-              "hover:border hover:border-[#5D6B68]/50",
-              "hover:shadow-lg hover:shadow-[#5D6B68]/20",
-              "text-sidebar-accent-foreground hover:text-white",
-              active &&
-                "bg-gradient-to-r from-[#1F2C27]/60 to-[#1F2C27]/30 backdrop-blur-md border border-[#5D6B68]/60 text-white shadow-[0_0_10px_#5D6B68]"
+              // Base styles
+              "group relative flex items-center gap-3 px-4 py-3 rounded-xl transition-all duration-300 ease-out select-none overflow-hidden",
+              // Background and hover effects
+              "bg-gradient-to-r from-green-800/20 to-green-700/10 hover:from-green-700/40 hover:to-green-600/20",
+              "backdrop-blur-sm border border-green-700/20 hover:border-green-600/40",
+              // Shadow effects
+              "shadow-sm hover:shadow-lg hover:shadow-green-900/30",
+              // Text colors
+              "text-green-100/80 hover:text-white",
+              // Active state
+              active && [
+                "bg-gradient-to-r from-green-600/50 to-green-500/30",
+                "border-green-500/60 text-white",
+                "shadow-lg shadow-green-900/40",
+                "before:absolute before:inset-0 before:bg-gradient-to-r before:from-white/5 before:to-transparent before:rounded-xl"
+              ]
             )}
             isActive={active}
           >
-            <Link href={item.href} className="flex items-center gap-4 w-full">
-              <item.icon className="w-6 h-6 text-sidebar-accent-foreground group-hover:text-white transition-transform duration-200 group-hover:scale-110" />
+            <Link href={item.href} className="flex items-center gap-3 w-full relative z-10">
+              <item.icon className={cn(
+                "w-5 h-5 transition-all duration-300",
+                "text-green-200/70 group-hover:text-white group-hover:scale-110",
+                active && "text-white scale-110"
+              )} />
               <span className="text-sm font-semibold tracking-wide">{item.label}</span>
             </Link>
           </SidebarMenuButton>
@@ -67,27 +80,33 @@ export const DashboardSidebar = () => {
 
   return (
     <Sidebar
-      className={cn(
-        // 💎 Эффект стекла + тёмно-зелёный градиент
-        "bg-[#121e1a]/80 backdrop-blur-xl border-r border-[#5D6B68]/40 shadow-xl",
-        "text-white"
-      )}
+      className="bg-gradient-to-b from-green-900 via-green-900/95 to-green-800/90 backdrop-blur-xl border-r border-green-700/30"
     >
       {/* 🔰 Шапка — стекло, тёмный фон, жирный заголовок */}
-      <SidebarHeader className="px-4 py-4   backdrop-blur-md shadow-inner flex items-center gap-3">
-        <Link href="/" className="flex items-center gap-2">
-          <Image src="/logo.svg" height={36} width={36} alt="Shadow AI Logo" priority />
-          <p className="text-3xl font-extrabold tracking-tight select-none text-[#ffffff] drop-shadow-[0_1px_1px_rgba(0,0,0,0.6)]">
+      <SidebarHeader className="px-6 py-6 bg-gradient-to-r from-green-800/40 to-green-700/30 backdrop-blur-md shadow-lg border-b border-green-700/40">
+        <Link href="/" className="flex items-center gap-3 group">
+          <div className="relative">
+            <Image 
+              src="/logo.svg" 
+              height={40} 
+              width={40} 
+              alt="Shadow AI Logo" 
+              priority 
+              className="transition-transform duration-300 group-hover:scale-110"
+            />
+            <div className="absolute inset-0 bg-white/10 rounded-full blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-300" />
+          </div>
+          <h1 className="text-3xl font-black tracking-tight select-none text-white drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)] group-hover:drop-shadow-[0_2px_8px_rgba(0,0,0,0.6)] transition-all duration-300">
             Shadow.Ai
-          </p>
+          </h1>
         </Link>
       </SidebarHeader>
 
-      <div className="px-4 py-2">
-        <Separator className="opacity-100 text-[#5D6B68]" />
+      <div className="px-6 py-3">
+        <Separator className="bg-gradient-to-r from-transparent via-green-600/60 to-transparent h-px" />
       </div>
 
-      <SidebarContent>
+      <SidebarContent className="px-4">
         <SidebarGroup>
           <SidebarGroupContent>
             <SidebarMenu>
@@ -95,9 +114,9 @@ export const DashboardSidebar = () => {
             </SidebarMenu>
           </SidebarGroupContent>
 
-          <SidebarSeparator className="my-4 border-t-2 border-[#5D6B68]/70" />
+          <SidebarSeparator className="my-6 bg-gradient-to-r from-transparent via-green-600/50 to-transparent h-px border-none" />
 
-          <SidebarGroupContent className="mt-2">
+          <SidebarGroupContent>
             <SidebarMenu>
               <MenuItems items={secondSection} pathname={pathname} />
             </SidebarMenu>
@@ -106,7 +125,7 @@ export const DashboardSidebar = () => {
       </SidebarContent>
 
       {/* 👤 Футер с кнопкой юзера */}
-      <SidebarFooter className="bg-[#1F2C27]/50 backdrop-blur-sm border-t border-[#5D6B68]/40">
+      <SidebarFooter className="bg-gradient-to-r from-green-800/60 to-green-700/40 backdrop-blur-md border-t border-green-600/40 shadow-inner p-4">
         <DashboardUserButton />
       </SidebarFooter>
     </Sidebar>

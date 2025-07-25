@@ -7,6 +7,9 @@ import { Button } from "@/components/ui/button";
 import { useTRPC } from "@/trpc/client";
 import { useSuspenseQuery } from "@tanstack/react-query";
 import { useState } from "react";
+import { DataTable } from "../../components/data-table";
+import { columns } from "../../components/columns";
+import { EmptyState } from "@/components/empty-state";
 
 export const AgentsView = () => {
   const trpc = useTRPC();
@@ -14,26 +17,25 @@ export const AgentsView = () => {
   const [open, setOpen] = useState(false);
 
   return (
-    <div
-      // Тёмная, более "гласморфная" панель с эффектом стекла
-      className="w-full max-w-3xl mx-auto p-6 bg-green-950 border  rounded-xl shadow-xl   space-y-6"
-    >
-      {/* Заголовок и кнопка открытия диалога */}
+    <div className="w-full bg-white border border-gray-200 shadow-lg py-8 px-6 rounded-2xl space-y-8">
+      {/* Верхняя панель */}
       <div className="flex items-center justify-between">
-        {/* Усиленный жирный и тёмный заголовок Agents */}
-        <h2 className="text-lg font-extrabold text-white drop-shadow-md select-none">
+        <h2 className="text-2xl font-extrabold text-gray-900 tracking-tight">
           Agents
         </h2>
         <Button
           variant="ghost"
-          className="bg-white"
+          className="bg-gray-900 hover:bg-gray-800 active:scale-95 
+                     border border-gray-700 hover:border-gray-600
+                     text-white font-medium px-6 py-2.5 rounded-lg
+                     shadow-md hover:shadow-lg transition-all duration-300"
           onClick={() => setOpen(true)}
         >
           Open Dialog
         </Button>
       </div>
 
-      {/* Диалог с кнопкой внутри */}
+      {/* Диалог */}
       <ResponsiveDialog
         title="Responsive test"
         description="Responsive description"
@@ -41,30 +43,30 @@ export const AgentsView = () => {
         onOpenChange={setOpen}
       >
         <div className="flex flex-col space-y-4">
-          <Button onClick={() => setOpen(false)} className="self-end">
+          <Button
+            onClick={() => setOpen(false)}
+            className="self-end bg-gray-900 hover:bg-gray-800 active:scale-95
+                       text-white px-6 py-2.5 rounded-lg shadow-md hover:shadow-lg
+                       transition-all duration-300"
+          >
             Exit
           </Button>
         </div>
       </ResponsiveDialog>
 
-      {/* Карточки агентов вместо JSON */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-        {data?.map((agent: any) => (
-          <div
-            key={agent.id}
-            // Немного темнее, гласморфный стиль для карточек агентов
-            className="bg-emerald-900  p-4 border border-white/10 rounded-lg shadow-md backdrop-blur-md"
-          >
-            {/* Имя агента */}
-            <h3 className="text-white font-semibold truncate">{agent.name}</h3>
-            {/* Инструкции */}
-            <p className="text-white/70 text-sm mt-1 line-clamp-3">
-              {agent.instructions}
-            </p>
-            {/* Можно добавить email или userId, если нужно */}
-            <p className="text-white/40 text-xs mt-2 truncate">{agent.userId}</p>
-          </div>
-        ))}
+      {/* Таблица */}
+      <div className="flex-1 pb-6 px-2 flex flex-col gap-y-6">
+        <div className="border border-gray-200 rounded-lg overflow-hidden">
+          <DataTable data={data} columns={columns} />
+          {data.length === 0 && (
+            <EmptyState
+            title="Create you first AGI Agent"
+            description="Create an AGI to join in meetings & Interact with Agents & video call"
+            
+            />
+          )
+          }
+        </div>
       </div>
     </div>
   );
@@ -72,18 +74,22 @@ export const AgentsView = () => {
 
 export const AgentsViewLoading = () => {
   return (
-    <LoadingState
-      title="Loading Agents for Evil"
-      description="Take a moment, my friend… don’t panic!"
-    />
+    <div className="w-full bg-white border border-gray-200 shadow-lg py-12 px-8 rounded-2xl">
+      <LoadingState
+        title="Loading Agents for Evil"
+        description="Take a moment, my friend… don’t panic!"
+      />
+    </div>
   );
 };
 
 export const AgentsViewError = () => {
   return (
-    <ErrorState
-      title="Failed to Load Agents"
-      description="We couldn't load your agents. Please try refreshing the page or contact support if the problem persists."
-    />
+    <div className="w-full bg-white border border-gray-200 shadow-lg py-12 px-8 rounded-2xl">
+      <ErrorState
+        title="Failed to Load Agents"
+        description="We couldn't load your agents. Please try refreshing the page or contact support if the problem persists."
+      />
+    </div>
   );
 };
